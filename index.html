@@ -3,14 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lottery Wheel Portfolio</title>
+    <title>Nice to meet Joy!</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
   </head>
   <body>
     <div class="wheel-container">
-      <canvas id="wheel"></canvas>
-      <button id="spinButton">Spin</button>
+      <!-- 在原来的segment结构中添加span -->
+      <div class="wheel">
+        <!-- 移除内联style中的--rotate -->
+        <div class="segment" data-info="Projects">
+          <span>My<br>Projects</span> <!-- 使用换行 -->
+        </div>
+        <div class="segment" data-info="Education">
+          <span>Education</span>
+        </div>
+        <div class="segment" data-info="Experience">
+          <span>Work<br>Experience</span>
+        </div>
+        <div class="segment" data-info="Contact">
+          <span>Contact</span>
+        </div>
+        <div class="segment" data-info="Skills">
+          <span>Technical<br>Skills</span>
+        </div>
+        <div class="segment" data-info="Certificates">
+          <span>Certificates</span>
+        </div>
+      </div>
+</div>
+      </div>
+      <div class="pointer"></div>
     </div>
-    <script src="script.js"></script>
+    <div class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 class="modal-title"></h2>
+        <div class="modal-body"></div>
+      </div>
+    </div>
   </body>
 </html>

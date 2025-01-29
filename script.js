@@ -1,78 +1,55 @@
-const canvas = document.getElementById("wheel");
-const ctx = canvas.getContext("2d");
-const spinButton = document.getElementById("spinButton");
+document.addEventListener("DOMContentLoaded", () => {
+  // 获取所有扇形
+  const segments = document.querySelectorAll(".segment");
+  const modal = document.querySelector(".modal");
+  const modalTitle = document.querySelector(".modal-title");
+  const modalBody = document.querySelector(".modal-body");
+  const closeBtn = document.querySelector(".close");
+  const wheel = document.querySelector(".wheel");
 
-canvas.width = 300;
-canvas.height = 300;
-
-const sectors = [
-  "Prize 1",
-  "Prize 2",
-  "Prize 3",
-  "Prize 4",
-  "Prize 5",
-  "Prize 6",
-];
-const colors = [
-  "#FFDDC1",
-  "#FFABAB",
-  "#FFC3A0",
-  "#D5AAFF",
-  "#85E3FF",
-  "#B9FBC0",
-];
-let currentAngle = 0;
-
-// 绘制转盘
-function drawWheel() {
-  const arc = (2 * Math.PI) / sectors.length;
-  sectors.forEach((sector, index) => {
-    const angle = arc * index;
-    ctx.beginPath();
-    ctx.fillStyle = colors[index];
-    ctx.moveTo(150, 150);
-    ctx.arc(150, 150, 150, angle, angle + arc);
-    ctx.fill();
-    ctx.stroke();
-    ctx.save();
-    ctx.translate(
-      150 + Math.cos(angle + arc / 2) * 100,
-      150 + Math.sin(angle + arc / 2) * 100
-    );
-    ctx.rotate(angle + arc / 2);
-    ctx.fillStyle = "#000";
-    ctx.fillText(sector, -ctx.measureText(sector).width / 2, 0);
-    ctx.restore();
+  // 为每个扇形添加点击事件
+  segments.forEach((segment) => {
+    segment.addEventListener("click", (e) => {
+      const infoType = e.target.dataset.info;
+      showModal(infoType);
+    });
   });
-}
 
-// 旋转逻辑
-function spinWheel() {
-  let spinAngle = Math.random() * 360 + 720; // 随机旋转角度
-  let spinDuration = 3000; // 旋转时间（毫秒）
-  let startTime = null;
-
-  function animate(timestamp) {
-    if (!startTime) startTime = timestamp;
-    const elapsed = timestamp - startTime;
-    const progress = Math.min(elapsed / spinDuration, 1);
-    currentAngle = (spinAngle * progress) % 360;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.translate(150, 150);
-    ctx.rotate((currentAngle * Math.PI) / 180);
-    ctx.translate(-150, -150);
-    drawWheel();
-    ctx.restore();
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    } else {
-      console.log("Spin complete!");
-    }
+  // 显示模态框
+  function showModal(infoType) {
+    modalTitle.textContent = infoType;
+    modalBody.innerHTML = getModalContent(infoType);
+    modal.style.display = "block";
   }
 
-  requestAnimationFrame(animate);
-}
+  // 关闭模态框
+  closeBtn.onclick = () => (modal.style.display = "none");
+  window.onclick = (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  };
 
-drawWheel();
-spinButton.addEventListener("click", spinWheel);
+  // 根据类型返回内容（你可以后续填充具体内容）
+  function getModalContent(type) {
+    const contents = {
+      Projects: "这里展示我的项目...",
+      Education: "这里展示教育经历...",
+      Experience: "这里展示工作经历...",
+      Contact: "这里展示联系方式...",
+      Skills: "这里展示技术类别...",
+      Certificates: "这里展示证书...",
+    };
+    return `<p>${contents[type]}</p>`;
+  }
+
+  // 旋转转盘的函数
+  function spinWheel() {
+    const randomDeg = Math.floor(Math.random() * 360 + 3600); // 随机转动的角度
+    wheel.style.transform = `rotate(${randomDeg}deg)`; // 设置转盘旋转的角度
+  }
+
+  // 添加点击事件触发转盘旋转
+  const pointer = document.querySelector(".pointer");
+  pointer.addEventListener("click", () => {
+    spinWheel();
+  });
+});
